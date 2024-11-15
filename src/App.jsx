@@ -16,27 +16,29 @@ function deposit(current,action){
 
               return user_chat
          }
-         else if(action.type === "ai"){
-              const size = dummy.length-1;
-              if(size >= 0){
-                  dummy[size].ai = action.payload;
-              }
+         else if (action.type === "ai") {
+          const size = dummy.length - 1;
+          if (size >= 0) {
+            dummy[size].ai = Array.isArray(action.payload)
+              ? action.payload
+              : [action.payload];
+          }
+          return dummy;
+        }
+        return dummy;
+      }
 
-              return dummy;
-         }
-
-         return [...dummy];
-}
 
 function App() {
   const [chat,up_chat] = useReducer(deposit,[{
     user:"",
-    ai:"Welcome to Dark's Bot!",
+    ai:["Welcome to Dark's Bot!"],
   }]);
 
   function chat_controller(msg){
 
       const user_q = msg;
+
       up_chat(
         {
           type:"user",
@@ -50,10 +52,11 @@ function App() {
   async function ai(query){
     
     const response = await run(query);
+    const ai_r = response.split(/(```.*?```|\*\*.*?\*\*)/g).filter(item => item.trim() !== "")
     up_chat(
       {
         type:"ai",
-        payload:response
+        payload:ai_r
       }
     );
 
@@ -67,10 +70,26 @@ function App() {
              chat.length>0 &&
               chat.map((history,index) => 
                    <div key={index}>
-                           {history.user!==""&&
-                            <pre className='userchat'>{history.user}</pre>}
-                           <pre className='aichat'>{history.ai===""?<h1>Loading...</h1>
-                           :history.ai
+                           {history.user && <pre className='userchat'>{history.user}</pre>}
+
+                           <pre className='aichat'>
+                            {history.ai.length===0?
+                              <h1>Loading...</h1>:
+                              
+                              (history.ai.map((items, index) => (
+                                  <div key={index}>
+                                    {items.includes('```') ? (
+                                      <pre className="code">{items.replace(/```/g, '')}</pre>
+                                    ) : items.includes('**') ? (
+                                      <pre className="head">{items.replace(/\*\*/g, '')}</pre>
+                                    ) : items.includes('`') ? (
+                                      <pre>{items.replace(/`/g, '')}</pre>
+                                    ) :(
+                                      <pre>{items}</pre>
+                                    )}
+                                  </div>
+                                ))
+                            )
                            }</pre>
                    </div>
                    )     

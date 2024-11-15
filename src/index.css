@@ -48,10 +48,40 @@ body{
   margin-right:auto;
   word-wrap: break-word;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
 
+.code{
+  width: auto;
+  max-width: 500px;
+  background: rgb(0, 0, 0);
+  color: white;
+  white-space: pre-wrap;
+  border-radius: 1rem;
+  position: relative;
+  word-wrap: break-word;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  padding: 5px;
+}
+
+.head{
+  font-size: 1.1em;
+  white-space: wrap;
+  word-wrap: break-word;
 }
 
 textarea{
   scrollbar-width: none;
   resize: none;
+}
+
+pre{
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.hight{
+  border-radius: 10px;
+  background: rgb(126, 126, 126);
+  color: white;
+  padding: 3px;
 }
