@@ -6,7 +6,8 @@ export default function Chat({controller}) {
 
   function send(e){
         e.preventDefault();
-
+         
+        if(msg.current.value === ""){return null}
         controller(msg.current.value);
         msg.current.value ="";
   }

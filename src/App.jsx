@@ -39,7 +39,6 @@ function App() {
 
       const user_q = msg;
 
-      if(user==="") return;
       up_chat(
         {
           type:"user",
